@@ -1,0 +1,12 @@
+<div class="container col-xs-6" >
+    <h3>Sign In</h3>
+    <form [ngFormModel]="signInForm" (submit)="onSignIn()" class="form-horizontal">
+        <div class="form-group">
+            <input type="text" class="form-control" ngControl="username" placeholder="username" />
+        </div>
+        <div class="form-group">
+            <input type="password" class="form-control" ngControl="password" placeholder="password" />
+        </div>
+        <button type="submit" class="btn btn-primary">SignUp</button>
+    </form>
+</div>

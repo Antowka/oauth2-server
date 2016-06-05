@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <changeSet author="anton (generated)" id="1464988356477-1">
+        <createSequence sequenceName="authorities_id_seq"/>
+    </changeSet>
+    <changeSet author="anton (generated)" id="1464988356477-2">
+        <createSequence sequenceName="hibernate_sequence"/>
+    </changeSet>
+    <changeSet author="anton (generated)" id="1464988356477-3">
+        <createTable tableName="ClientDetails">
+            <column name="appId" type="VARCHAR(256)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="resourceIds" type="VARCHAR(256)"/>
+            <column name="appSecret" type="VARCHAR(256)"/>
+            <column name="scope" type="VARCHAR(256)"/>
+            <column name="grantTypes" type="VARCHAR(256)"/>
+            <column name="redirectUrl" type="VARCHAR(256)"/>
+            <column name="authorities" type="VARCHAR(256)"/>
+            <column name="access_token_validity" type="INT"/>
+            <column name="refresh_token_validity" type="INT"/>
+            <column name="additionalInformation" type="VARCHAR(4096)"/>
+            <column name="autoApproveScopes" type="VARCHAR(256)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="anton (generated)" id="1464988356477-4">
+        <createTable tableName="authorities">
+            <column autoIncrement="true" name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" primaryKeyName="pk_authorities"/>
+            </column>
+            <column name="authority" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="anton (generated)" id="1464988356477-5">
+        <createTable tableName="oauth_access_token">
+            <column name="token_id" type="VARCHAR(256)"/>
+            <column name="token" type="BYTEA"/>
+            <column name="authentication_id" type="VARCHAR(256)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_name" type="VARCHAR(256)"/>
+            <column name="client_id" type="VARCHAR(256)"/>
+            <column name="authentication" type="BYTEA"/>
+            <column name="refresh_token" type="VARCHAR(256)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="anton (generated)" id="1464988356477-6">
+        <createTable tableName="oauth_approvals">
+            <column name="userId" type="VARCHAR(256)"/>
+            <column name="clientId" type="VARCHAR(256)"/>
+            <column name="scope" type="VARCHAR(256)"/>
+            <column name="status" type="VARCHAR(10)"/>
+            <column name="expiresAt" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="lastModifiedAt" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="anton (generated)" id="1464988356477-7">
+        <createTable tableName="oauth_client_details">
+            <column name="client_id" type="VARCHAR(256)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="resource_ids" type="VARCHAR(256)"/>
+            <column name="client_secret" type="VARCHAR(256)"/>
+            <column name="scope" type="VARCHAR(256)"/>
+            <column name="authorized_grant_types" type="VARCHAR(256)"/>
+            <column name="web_server_redirect_uri" type="VARCHAR(256)"/>
+            <column name="authorities" type="VARCHAR(256)"/>
+            <column name="access_token_validity" type="INT"/>
+            <column name="refresh_token_validity" type="INT"/>
+            <column name="additional_information" type="VARCHAR(4096)"/>
+            <column name="autoapprove" type="VARCHAR(256)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="anton (generated)" id="1464988356477-8">
+        <createTable tableName="oauth_client_token">
+            <column name="token_id" type="VARCHAR(256)"/>
+            <column name="token" type="BYTEA"/>
+            <column name="authentication_id" type="VARCHAR(256)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_name" type="VARCHAR(256)"/>
+            <column name="client_id" type="VARCHAR(256)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="anton (generated)" id="1464988356477-9">
+        <createTable tableName="oauth_code">
+            <column name="code" type="VARCHAR(256)"/>
+            <column name="authentication" type="BYTEA"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="anton (generated)" id="1464988356477-10">
+        <createTable tableName="oauth_refresh_token">
+            <column name="token_id" type="VARCHAR(256)"/>
+            <column name="token" type="BYTEA"/>
+            <column name="authentication" type="BYTEA"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="anton (generated)" id="1464988356477-11">
+        <createTable tableName="users">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="email" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="enabled" type="BOOL">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="VARCHAR(255)"/>
+            <column name="username" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="anton (generated)" id="1464988356477-12">
+        <createTable tableName="users_authorities">
+            <column name="users_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="authorities_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="anton (generated)" id="1464988356477-13">
+        <addPrimaryKey columnNames="id" constraintName="users_pkey" tableName="users"/>
+    </changeSet>
+    <changeSet author="anton (generated)" id="1464988356477-14">
+        <addForeignKeyConstraint baseColumnNames="authorities_id" baseTableName="users_authorities" constraintName="fk_4k9modmi5xv8km1qoyfyrjhjt" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="authorities"/>
+    </changeSet>
+    <changeSet author="anton (generated)" id="1464988356477-15">
+        <addForeignKeyConstraint baseColumnNames="users_id" baseTableName="users_authorities" constraintName="fk_rptayl7trfprewc0uljq5tp94" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users"/>
+    </changeSet>
+</databaseChangeLog>

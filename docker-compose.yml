@@ -1,0 +1,14 @@
+auth:
+  build: docker
+  volumes:
+    - "/mnt_ext/volumes/garage/postgresql/data/pgdata:/var/lib/postgresql/data/pgdata"
+  ports:
+    - "5432:5432"
+    - "8082:8082"
+  environment:
+    - "POSTGRES_USER=root"
+    - "POSTGRES_PASSWORD=root"
+    - "PGDATA=/var/lib/postgresql/data/pgdata"
+#    entrypoint:
+#     - "sh"
+#     - "/app/entry-point.sh"
