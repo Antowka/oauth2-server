@@ -1,7 +1,7 @@
 import {Component, Inject} from 'angular2/core';
-import {SignInService} from '../../services/SignInService';
+import {OAuthService} from '../../services/OAuthService';
 import {User} from '../../models/User';
-import {ControlGroup, FormBuilder, Validators, Control} from "angular2/common";
+import {ControlGroup, FormBuilder, Validators} from "angular2/common";
 
 
 @Component({
@@ -12,23 +12,22 @@ import {ControlGroup, FormBuilder, Validators, Control} from "angular2/common";
 export class SignIn{
 
     private signInForm: ControlGroup;
-    private signInService: SignInService;
 
-    constructor(@Inject(SignInService) signInService: SignInService, @Inject(FormBuilder) fb: FormBuilder ) {
+    constructor(
+        @Inject(OAuthService) private oAuthService: OAuthService,
+        @Inject(FormBuilder) private fb: FormBuilder ) {
+
         this.signInForm = fb.group({
             "username": ["", Validators.required],
             "password":["", Validators.required]
         });
-        
-        this.signInService = signInService;
     }
     
     private onSignIn() {
 
         if(this.signInForm.status == "VALID") {
-
             var user: User = <User>this.signInForm.value;
-            this.signInService.authUser(user);
+            this.oAuthService.authUser(user);
         }
     }
 }

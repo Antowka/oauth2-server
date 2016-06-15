@@ -1,6 +1,8 @@
 package ru.antowka.auth;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 
 import javax.servlet.*;
@@ -9,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Configuration
+@Order(Ordered.HIGHEST_PRECEDENCE)
 public class SimpleCORSFilterConfiguration implements Filter {
 
     @Override

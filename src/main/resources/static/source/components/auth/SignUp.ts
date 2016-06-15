@@ -1,6 +1,6 @@
 import {Component, Inject} from 'angular2/core';
 import {ControlGroup, FormBuilder, Validators} from "angular2/common";
-import {SignUpService} from "../../services/SignUpService";
+import {OAuthService} from '../../services/OAuthService';
 import {User} from "../../models/User";
 
 
@@ -14,7 +14,7 @@ export class SignUp{
     private signUpForm: ControlGroup;
 
     constructor(
-        @Inject(SignUpService) private signUpService: SignUpService,
+        @Inject(OAuthService) private oAuthService: OAuthService,
         @Inject(FormBuilder) private fb: FormBuilder) {
 
         this.signUpForm = fb.group({
@@ -29,7 +29,7 @@ export class SignUp{
 
         if(this.signUpForm.status == "VALID") {
             var user: User = <User>this.signUpForm.value;
-            this.signUpService.signUpUser(user);
+            this.oAuthService.signUpUser(user);
         }
     }
 }
