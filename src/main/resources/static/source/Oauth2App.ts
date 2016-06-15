@@ -9,6 +9,7 @@ import {Component,provide} from 'angular2/core';
 import {HTTP_PROVIDERS} from 'angular2/http';
 import {ROUTER_PROVIDERS, ROUTER_DIRECTIVES, RouteConfig, APP_BASE_HREF, HashLocationStrategy, LocationStrategy} from 'angular2/router';
 
+import {HttpAuthService} from "./services/HttpAuthService";
 import {OAuthService} from './services/OAuthService';
 
 import {SignUp} from "./components/auth/SignUp";
@@ -28,6 +29,7 @@ export class Oauth2App{
 }
 
 bootstrap(Oauth2App, [
+    HttpAuthService,
     OAuthService,
     HTTP_PROVIDERS,
     ROUTER_PROVIDERS,
