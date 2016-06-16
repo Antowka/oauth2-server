@@ -13,11 +13,13 @@ export class HttpAuthService {
      * Method for GET request
      * 
      * @param url
+     * @param type
+     *
      * @returns {Observable<Response>}
      */
-    public get(url: string): Observable<Response> {
+    public get(url: string, type:string): Observable<Response> {
         return this.http.get(url, {
-            headers:this.getAuthHeaders()
+            headers:this.getAuthHeaders(type)
         });
     }
 
@@ -25,16 +27,24 @@ export class HttpAuthService {
      * 
      * @param url
      * @param data
+     * @param type
      * @returns {Observable<Response>}
      */
-    public post(url: string, data: any): Observable<Response> {
+    public post(url: string, data: any, type: string): Observable<Response> {
 
-        let headers = this.getAuthHeaders();
-        headers.append('Content-Type', 'application/json;charset=UTF-8');
+        let headers = this.getAuthHeaders(type);
+
+        //For auth and refresh token
+        if(type == 'signin' || data == 'refresh') {
+            data = HttpAuthService.encodeJsonToUrl(data);
+            console.log(data);
+        } else {
+            data = JSON.stringify(data);
+        }
 
         return this.http.post(
             url,
-            JSON.stringify(data),
+            data,
             {headers:headers}
         );
     }
@@ -44,28 +54,47 @@ export class HttpAuthService {
      *
      * @returns {Headers}
      */
-    private getAuthHeaders() : Headers {
+    private getAuthHeaders(type:string) : Headers {
 
         var tokenObj = JSON.parse(localStorage.getItem('token'));
         let headers = new Headers();
 
-        if(tokenObj) {
-            console.log(tokenObj);
-            headers.append('Authorization', 'Bearer ' + tokenObj.access_token);
-        } else {
-            headers.append('Authorization', 'Basic ' + this.basicSecret);
+        switch(type){
+
+            case 'signin':
+                headers.append('Authorization', 'Basic ' + this.basicSecret);
+                headers.append('Content-Type', 'application/x-www-form-urlencoded');
+            break;
+
+            case 'refresh':
+                headers.append('Authorization', 'Bearer ' + tokenObj.access_token);
+                headers.append('Content-Type', 'application/x-www-form-urlencoded');
+            break;
+
+            case 'auth':
+                headers.append('Authorization', 'Bearer ' + tokenObj.access_token);
+                headers.append('Content-Type', 'application/json;charset=UTF-8');
+            break;
+
+            case 'noauth':
+                headers.append('Content-Type', 'application/json;charset=UTF-8');
+            break;
         }
 
         return headers;
     }
 
     /**
-     * Save token to localStorage
+     * convert json to URL
      *
-     * @param data
+     * @param obj
+     * @returns {string}
      */
-    private saveAuthTokens(data){
-
-        localStorage.setItem('token', JSON.stringify(data));
+    private static encodeJsonToUrl(obj: Object){
+        let url:string = "";
+        for (let key in obj) {
+            url += (url.length == 0)?key + "=" + obj[key]:"&" + key + "=" + obj[key];
+        }
+        return url;
     }
 }
