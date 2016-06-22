@@ -7,13 +7,16 @@ import {bootstrap} from 'angular2/platform/browser';
 import {Component,provide} from 'angular2/core';
 
 import {HTTP_PROVIDERS} from 'angular2/http';
-import {ROUTER_PROVIDERS, ROUTER_DIRECTIVES, RouteConfig, APP_BASE_HREF, HashLocationStrategy, LocationStrategy} from 'angular2/router';
+import {ROUTER_PROVIDERS, ROUTER_DIRECTIVES, RouteConfig} from 'angular2/router';
+import {APP_BASE_HREF, LocationStrategy} from "angular2/src/platform/browser/location/location_strategy";
+import {HashLocationStrategy} from "angular2/src/platform/browser/location/hash_location_strategy";
 
 import {HttpAuthService} from "./services/HttpAuthService";
 import {OAuthService} from './services/OAuthService';
 
 import {SignUp} from "./components/auth/SignUp";
 import {SignIn} from "./components/auth/SignIn";
+
 
 @Component({
     selector:'oauth2-app',

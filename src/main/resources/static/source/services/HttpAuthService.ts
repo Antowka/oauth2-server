@@ -35,9 +35,8 @@ export class HttpAuthService {
         let headers = this.getAuthHeaders(type);
 
         //For auth and refresh token
-        if(type == 'signin' || data == 'refresh') {
+        if(type == 'signin' || type == 'refresh') {
             data = HttpAuthService.encodeJsonToUrl(data);
-            console.log(data);
         } else {
             data = JSON.stringify(data);
         }
@@ -67,7 +66,7 @@ export class HttpAuthService {
             break;
 
             case 'refresh':
-                headers.append('Authorization', 'Bearer ' + tokenObj.access_token);
+                headers.append('Authorization', 'Basic ' + this.basicSecret);
                 headers.append('Content-Type', 'application/x-www-form-urlencoded');
             break;
 

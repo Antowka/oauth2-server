@@ -2,7 +2,6 @@ import {Injectable, Inject} from 'angular2/core';
 import {User} from "../models/User";
 import {HttpAuthService} from "./HttpAuthService";
 import {Router} from 'angular2/router'
-import {LocalStorage} from 'angular2-angular2-localStorage'
 
 @Injectable()
 export class OAuthService {
@@ -12,7 +11,9 @@ export class OAuthService {
     private refreshToken: Object = null;
 
     private clientId : string = "oauth2-server-admin";
-    private starageItemName : string= "token";
+    private starageItemName : string = "token";
+
+    private refreshInterval: number = 10e3;
 
     private signInUrl : string = "/oauth/token";
     private signUpUrl : string = "/api/users/signup";
@@ -23,8 +24,7 @@ export class OAuthService {
 
     constructor(
         @Inject(HttpAuthService) private httpAuthService: HttpAuthService,
-        @Inject(Router) private router: Router,
-        @Inject(LocalStorage) private ls:LocalStorage
+        @Inject(Router) private router: Router
     ) {
 
         if(this.refreshToken == null && localStorage.getItem(this.starageItemName)) {
@@ -52,10 +52,8 @@ export class OAuthService {
             .subscribe(
                 response => {
                     response = response.json();
-                    console.log(response); //TODO : Установка временной метки
-                    response['expires_in'] = new Date().getTime() + response['expires_in'];
+                    response['expires_in'] = new Date().getTime() + response['expires_in'] - this.refreshInterval;
                     localStorage.setItem(this.starageItemName, JSON.stringify(response));
-                    console.log(localStorage);
                 },
                 err  => console.log(err),
                 ()   => console.log("SignIn complete")
@@ -105,34 +103,34 @@ export class OAuthService {
             "refresh_token": null
         };
 
+        var me = this;
+
         this.refreshToken = setInterval(function () {
 
-            let tokenObj = JSON.parse(localStorage.getItem(this.starageItemName));
+            let tokenObj = JSON.parse(localStorage.getItem(me.starageItemName));
             let currentTime = new Date().getTime();
 
-            console.log("UPDATE TOKEN! ");
-            console.log(localStorage.getItem(this.starageItemName));
 
             if(tokenObj != null && tokenObj['expires_in'] >= currentTime) {
 
                 refreshForm.refresh_token = tokenObj['refresh_token'];
 
-                this.httpAuthService.post(
-                    this.host + this.refreshUrl,
+                me.httpAuthService.post(
+                    me.host + me.refreshUrl,
                     refreshForm,
                     'refresh'
                 )
                 .subscribe(
                     response => {
                         response = response.json();
-                        response['expires_in'] = new Date().getTime() + response['expires_in'];
-                        localStorage.setItem(this.starageItemName, JSON.stringify(response));
+                        response['expires_in'] = new Date().getTime() + response['expires_in'] - this.refreshInterval;
+                        localStorage.setItem(me.starageItemName, JSON.stringify(response));
                     },
                     err => console.log(err),
                     () => console.log("Refresh complete")
                 )
             }
 
-        }, 10e3);
+        }, this.refreshInterval);
     }
 }
