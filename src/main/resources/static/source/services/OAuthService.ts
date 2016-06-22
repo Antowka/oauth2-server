@@ -1,41 +1,46 @@
 import {Injectable, Inject} from 'angular2/core';
 import {User} from "../models/User";
 import {HttpAuthService} from "./HttpAuthService";
-import {Router} from 'angular2/router'
+import {Config} from '../config/Config';
 
 @Injectable()
 export class OAuthService {
 
-    private host : string = "http://localhost:8083";
+    private host : string;
 
     private refreshToken: Object = null;
 
-    private clientId : string = "oauth2-server-admin";
-    private starageItemName : string = "token";
+    private clientId : string;
+    private storageItemName : string;
+    private refreshInterval: number;
 
-    private refreshInterval: number = 10e3;
-
-    private signInUrl : string = "/oauth/token";
-    private signUpUrl : string = "/api/users/signup";
-    private refreshUrl : string = "/oauth/token";
-    private getUser : string = "/api/users/test";
-
-
+    private signInUrl : string;
+    private signUpUrl : string;
+    private refreshUrl : string;
 
     constructor(
         @Inject(HttpAuthService) private httpAuthService: HttpAuthService,
-        @Inject(Router) private router: Router
+        @Inject(Config) private config: Config
     ) {
 
-        if(this.refreshToken == null && localStorage.getItem(this.starageItemName)) {
+        if(this.refreshToken == null && localStorage.getItem(this.storageItemName)) {
             this.updateToken();
         }
+        
+        this.host = config.host;
+        this.clientId = config.clientId;
+        this.storageItemName = config.storageItemName;
+        this.refreshInterval = config.timeoutTokenRefresh;
+
+        this.signInUrl = config.signInUrl;
+        this.signUpUrl = config.signUpUrl;
+        this.refreshUrl = config.refreshUrl;
     }
 
     /**
      * Auth method
      */
-    public authUser(user: User) {
+    public authUser(user: User, cb: any): any {
 
         var authForm = {
             "grant_type": "password",
@@ -53,9 +58,10 @@ export class OAuthService {
                 response => {
                     response = response.json();
                     response['expires_in'] = new Date().getTime() + response['expires_in'] - this.refreshInterval;
-                    localStorage.setItem(this.starageItemName, JSON.stringify(response));
+                    localStorage.setItem(this.storageItemName, JSON.stringify(response));
+                    cb(true, {});
                 },
-                err  => console.log(err),
+                err  => cb(false, err),
                 ()   => console.log("SignIn complete")
             )
     }
@@ -66,28 +72,14 @@ export class OAuthService {
      *
      * @param user
      */
-    public signUpUser(user: User) {
+    public signUpUser(user: User): any {
 
-        this.httpAuthService
+        return this.httpAuthService
             .post(
                 this.host + this.signUpUrl,
                 user,
                 'noauth'
-            )
-            .subscribe(
-                response => this.redirectToAuth(),
-                err  => console.log(err),
-                ()   => console.log("SignUp complete")
-            )
-    }
-
-
-    /**
-     * Redirect to auth page
-     */
-    private redirectToAuth() {
-        console.log("Redirect to auth page!");
-        this.router.navigate(['SignIn']);
+            );
     }
 
 
@@ -107,7 +99,7 @@ export class OAuthService {
 
         this.refreshToken = setInterval(function () {
 
-            let tokenObj = JSON.parse(localStorage.getItem(me.starageItemName));
+            let tokenObj = JSON.parse(localStorage.getItem(me.storageItemName));
             let currentTime = new Date().getTime();
 
 
@@ -124,7 +116,7 @@ export class OAuthService {
                     response => {
                         response = response.json();
                         response['expires_in'] = new Date().getTime() + response['expires_in'] - this.refreshInterval;
-                        localStorage.setItem(me.starageItemName, JSON.stringify(response));
+                        localStorage.setItem(me.storageItemName, JSON.stringify(response));
                     },
                     err => console.log(err),
                     () => console.log("Refresh complete")

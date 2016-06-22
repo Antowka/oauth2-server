@@ -1,13 +1,19 @@
 import {Injectable, Inject} from 'angular2/core';
 import {Http, Headers, Response} from "angular2/http";
+import {Config} from '../config/Config';
 import {Observable} from "rxjs/Rx";
 
 @Injectable()
 export class HttpAuthService {
 
-    private basicSecret: string = btoa("oauth2-server-admin:23s$j2$23j&fs@12(4%^%fdg24gf");
+    private basicSecret: string;
     
-    constructor(@Inject(Http) private http: Http) {}
+    constructor(
+        @Inject(Http) private http: Http,
+        @Inject(Config) private config: Config) {
+
+        this.basicSecret = btoa(config.clientId + ":" + config.secret);
+    }
 
     /**
      * Method for GET request

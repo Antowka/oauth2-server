@@ -2,7 +2,7 @@
     <div class="row">
         <h2>OAuth2 Server</h2>
     </div>
-    <nav class="row">
+    <nav class="row" [hidden]="isAuthorized">
         <button class="btn btn-primary" [routerLink]="['SignUp']">Registration</button>
         <button class="btn btn-primary" [routerLink]="['SignIn']">Authorization</button>
     </nav>
