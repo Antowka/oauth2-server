@@ -33,11 +33,11 @@ import {AdminPanel} from "./components/AdminPanel";
 ])
 export class Oauth2App{
 
-    //UPDATE BY Observer
-    private isAuthorized : boolean;
+    public isAuth: boolean = false;
 
-    constructor(@Inject(SignIn) private signIn: SignIn) {
-        this.isAuthorized = signIn.isAuthorized;
+    constructor(@Inject(SignIn) public signIn: SignIn) {
+
+        this.isAuth = signIn.isAuthorised;
     }
 }
 

@@ -3,6 +3,7 @@ import {OAuthService} from '../../services/OAuthService';
 import {User} from '../../models/User';
 import {ControlGroup, FormBuilder, Validators} from "angular2/common";
 import {Router} from 'angular2/router';
+import {Config} from '../../config/Config';
 
 @Injectable()
 @Component({
@@ -13,28 +14,42 @@ import {Router} from 'angular2/router';
 export class SignIn{
 
     private signInForm: ControlGroup;
-    public isAuthorized: boolean = false;
+    private storageItemName : string;
 
     constructor(
         @Inject(OAuthService) private oAuthService: OAuthService,
         @Inject(FormBuilder) private fb: FormBuilder,
-        @Inject(Router) private router: Router) {
+        @Inject(Router) private router: Router,
+        @Inject(Config) private config: Config) {
 
         this.signInForm = fb.group({
             "username": ["", Validators.required],
             "password":["", Validators.required]
         });
+
+        this.storageItemName = config.storageItemName;
     }
-    
+
+    public signOut() {
+        localStorage.removeItem(this.storageItemName);
+    }
+
+    public isAuth() : boolean {
+        //check also expired token
+        if(localStorage.getItem(this.storageItemName)){
+            return true
+        }
+        
+        return false;
+    }
+
     private onSignIn() {
 
         if(this.signInForm.status == "VALID") {
             var user: User = <User>this.signInForm.value;
             this.oAuthService
                 .authUser(user, (isAuthorized, messege) => {
-
-                    this.isAuthorized = isAuthorized;
-
+                    
                     if(isAuthorized) {
                         this.router.navigate(['AdminPanel']);
                     } else {

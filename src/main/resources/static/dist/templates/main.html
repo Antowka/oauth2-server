@@ -2,10 +2,14 @@
     <div class="row">
         <h2>OAuth2 Server</h2>
     </div>
-    <nav class="row" [hidden]="isAuthorized">
-        <button class="btn btn-primary" [routerLink]="['SignUp']">Registration</button>
-        <button class="btn btn-primary" [routerLink]="['SignIn']">Authorization</button>
+
+    <!-- if no auth -->
+    <nav class="row">
+        <button *ngIf="!signIn.isAuth()" class="btn btn-primary" [routerLink]="['SignUp']">Registration</button>
+        <button *ngIf="!signIn.isAuth()" class="btn btn-primary" [routerLink]="['SignIn']">Authorization</button>
+        <button *ngIf="signIn.isAuth()"  class="btn btn-primary" (click)="signIn.signOut()">Sign Out</button>
     </nav>
+
     <div class="container">
         <router-outlet></router-outlet>
     </div>
