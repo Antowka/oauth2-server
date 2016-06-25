@@ -32,6 +32,7 @@ export class SignIn{
 
     public signOut() {
         localStorage.removeItem(this.storageItemName);
+        this.router.navigate(['SignIn']);
     }
 
     public isAuth() : boolean {

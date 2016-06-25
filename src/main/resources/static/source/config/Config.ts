@@ -19,7 +19,12 @@ export class Config {
     private _timeoutTokenRefresh: number = 10e3;
     private _clientId: string = 'oauth2-server-admin';
     private _secret: string = '23s$j2$23j&fs@12(4%^%fdg24gf';
-    private _storageItemName: string = 'storageItemName';
+    private _storageItemName: string = 'token';
+
+    //api
+    private _urlGetListUsers: string = '/api/users'; // link fot get list users
+
+
 
 
     get defaultLang():string {
@@ -60,5 +65,9 @@ export class Config {
 
     get storageItemName():string {
         return this._storageItemName;
+    }
+
+    get urlGetListUsers():string {
+        return this._urlGetListUsers;
     }
 }

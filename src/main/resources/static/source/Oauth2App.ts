@@ -19,6 +19,7 @@ import {OAuthService} from './services/OAuthService';
 import {SignUp} from "./components/auth/SignUp";
 import {SignIn} from "./components/auth/SignIn";
 import {AdminPanel} from "./components/AdminPanel";
+import {AdminPanelService} from "./services/AdminPanelService";
 
 
 @Component({
@@ -33,18 +34,14 @@ import {AdminPanel} from "./components/AdminPanel";
 ])
 export class Oauth2App{
 
-    public isAuth: boolean = false;
-
-    constructor(@Inject(SignIn) public signIn: SignIn) {
-
-        this.isAuth = signIn.isAuthorised;
-    }
+    constructor(@Inject(SignIn) public signIn: SignIn) {}
 }
 
 bootstrap(Oauth2App, [
     Config,
     SignIn,
     HttpAuthService,
+    AdminPanelService,
     OAuthService,
     HTTP_PROVIDERS,
     ROUTER_PROVIDERS,

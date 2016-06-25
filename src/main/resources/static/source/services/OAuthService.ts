@@ -59,6 +59,7 @@ export class OAuthService {
                     response = response.json();
                     response['expires_in'] = new Date().getTime() + response['expires_in'] - this.refreshInterval;
                     localStorage.setItem(this.storageItemName, JSON.stringify(response));
+                    console.log(localStorage);
                     cb(true, {});
                 },
                 err  => cb(false, err),

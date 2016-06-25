@@ -7,12 +7,14 @@ import {Observable} from "rxjs/Rx";
 export class HttpAuthService {
 
     private basicSecret: string;
+    private storageItemName: string;
     
     constructor(
         @Inject(Http) private http: Http,
         @Inject(Config) private config: Config) {
 
         this.basicSecret = btoa(config.clientId + ":" + config.secret);
+        this.storageItemName = config.storageItemName;
     }
 
     /**
@@ -61,7 +63,7 @@ export class HttpAuthService {
      */
     private getAuthHeaders(type:string) : Headers {
 
-        var tokenObj = JSON.parse(localStorage.getItem('token'));
+        var tokenObj = JSON.parse(localStorage.getItem(this.storageItemName));
         let headers = new Headers();
 
         switch(type){
@@ -77,8 +79,10 @@ export class HttpAuthService {
             break;
 
             case 'auth':
-                headers.append('Authorization', 'Bearer ' + tokenObj.access_token);
-                headers.append('Content-Type', 'application/json;charset=UTF-8');
+                if(tokenObj != null) {
+                    headers.append('Authorization', 'Bearer ' + tokenObj.access_token);
+                    headers.append('Content-Type', 'application/json;charset=UTF-8');
+                }
             break;
 
             case 'noauth':
