@@ -37,10 +37,10 @@ public class User {
     @JoinTable(
         name = "users_authorities",
         joinColumns = {
-                @JoinColumn(name = "users_id", referencedColumnName="id"),
+            @JoinColumn(name = "users_id", referencedColumnName="id"),
         },
         inverseJoinColumns = {
-                @JoinColumn(name = "authorities_id", referencedColumnName="id")
+            @JoinColumn(name = "authorities_id", referencedColumnName="id")
         }
     )
     private List<Authority> authorities;

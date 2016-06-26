@@ -22,7 +22,8 @@ export class Config {
     private _storageItemName: string = 'token';
 
     //api
-    private _urlGetListUsers: string = '/api/users'; // link fot get list users
+    private _urlGetListUsers: string = '/api/users?projection=exp_user'; // link fot get list users
+    private _usersUrl: string = '/api/users';
 
 
 
@@ -69,5 +70,9 @@ export class Config {
 
     get urlGetListUsers():string {
         return this._urlGetListUsers;
+    }
+    
+    get usersUrl():string {
+        return this._usersUrl;
     }
 }

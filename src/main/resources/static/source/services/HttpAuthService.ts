@@ -57,6 +57,20 @@ export class HttpAuthService {
     }
 
     /**
+     * DELETE HTTP with header
+     *
+     * @param url
+     * @param type
+     * @returns {Observable<Response>}
+     */
+    public remove(url: string, type:string): Observable<Response> {
+
+        let headers = this.getAuthHeaders(type);
+
+        return this.http.delete(url, {headers:headers});
+    }
+
+    /**
      * Methos response authHeaders
      *
      * @returns {Headers}

@@ -10,13 +10,14 @@ import java.util.List;
 @Projection(name="exp_user", types = {User.class})
 public interface UserExpanded {
 
+    Long getId();
+
     String getUsername();
 
     String getEmail();
 
     boolean isEnabled();
 
-    //TODO: // FIXME: 25.06.16 
-    @Value("#{target?.getAuthorities()}")
+    @Value("#{target.getAuthorities()}")
     List<Authority> getAuthorities();
 }
