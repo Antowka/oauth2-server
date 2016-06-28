@@ -17,8 +17,8 @@ export class Config {
 
     //tokens
     private _timeoutTokenRefresh: number = 10e3;
-    private _clientId: string = 'oauth2-server-admin';
-    private _secret: string = '23s$j2$23j&fs@12(4%^%fdg24gf';
+    private _clientId: string = 'oauth2-server-user';
+    private _secret: string = 'f$d(4s$j2h23jf^sd1)23$4%1d^ts';
     private _storageItemName: string = 'token';
 
     //api

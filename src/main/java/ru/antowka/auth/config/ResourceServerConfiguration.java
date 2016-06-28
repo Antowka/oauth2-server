@@ -1,4 +1,4 @@
-package ru.antowka.auth;
+package ru.antowka.auth.config;
 
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -7,11 +7,11 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.R
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 
 /**
- * Created by anton on 15.06.16.
+ * Config resource for use oauth2 authorization
  */
 @EnableResourceServer
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class ResourceSercerConfiguration extends ResourceServerConfigurerAdapter {
+public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
 
     private static final String RESOURCE_PREFIX = "oauth2-server";
 
@@ -22,6 +22,9 @@ public class ResourceSercerConfiguration extends ResourceServerConfigurerAdapter
                 .authorizeRequests()
                 .antMatchers("/api/users/signup").anonymous()
                 .antMatchers("/").permitAll()
+              .and()
+                .authorizeRequests()
+                .antMatchers("/api/**").hasAuthority("ROLE_ADMIN")
               .and()
                 .authorizeRequests()
                 .anyRequest().authenticated();

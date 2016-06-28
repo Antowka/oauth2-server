@@ -1,4 +1,4 @@
-package ru.antowka.auth;
+package ru.antowka.auth.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;

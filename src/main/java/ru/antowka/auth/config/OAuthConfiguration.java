@@ -1,4 +1,4 @@
-package ru.antowka.auth;
+package ru.antowka.auth.config;
 
 import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,23 +80,23 @@ public class OAuthConfiguration extends AuthorizationServerConfigurerAdapter {
                     .jdbc(dataSource)
                     .passwordEncoder(passwordEncoder)
 
-                    .withClient(env.getProperty("token.clientId.user"))
-                    .secret(env.getProperty("token.secret.user"))
-                    .authorizedGrantTypes("password", "authorization_code", "refresh_token")
-                    .authorities("ROLE_USER")
-                    .scopes("read")
-                    .resourceIds("oauth2-server")
-                    .accessTokenValiditySeconds(3600)
+                        .withClient(env.getProperty("token.clientId.user"))
+                        .secret(env.getProperty("token.secret.user"))
+                        .authorizedGrantTypes("password", "authorization_code", "refresh_token")
+                        .authorities("CLIENTS")
+                        .scopes("read")
+                        .resourceIds("oauth2-server")
+                        .accessTokenValiditySeconds(3600)
 
                     .and()
 
-                    .withClient(env.getProperty("token.clientId.admin"))
-                    .secret(env.getProperty("token.secret.admin"))
-                    .authorizedGrantTypes("password", "authorization_code", "refresh_token")
-                    .authorities("ROLE_ADMIN")
-                    .scopes("read", "write", "trust")
-                    .resourceIds("oauth2-server")
-                    .accessTokenValiditySeconds(3600);
+                        .withClient(env.getProperty("token.clientId.admin"))
+                        .secret(env.getProperty("token.secret.admin"))
+                        .authorizedGrantTypes("password", "authorization_code", "refresh_token")
+                        .authorities("ADMINS")
+                        .scopes("read", "write", "trust")
+                        .resourceIds("oauth2-server")
+                        .accessTokenValiditySeconds(3600);
 
         } else {
 

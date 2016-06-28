@@ -15,5 +15,5 @@ before_install:
   - sudo mv docker-compose /usr/local/bin
 
 script:
-  - docker-compose build
-  - docker-compose run test
+  - /usr/local/bin/docker-compose build
+  - /usr/local/bin/docker-compose run test
