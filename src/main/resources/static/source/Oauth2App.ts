@@ -21,7 +21,6 @@ import {SignIn} from "./components/auth/SignIn";
 import {AdminPanel} from "./components/AdminPanel";
 import {AdminPanelService} from "./services/AdminPanelService";
 
-
 @Component({
     selector:'oauth2-app',
     directives:[ROUTER_DIRECTIVES],
@@ -33,7 +32,6 @@ import {AdminPanelService} from "./services/AdminPanelService";
     {path: 'admin-panel', name: 'AdminPanel', component: AdminPanel}
 ])
 export class Oauth2App{
-
     constructor(@Inject(SignIn) public signIn: SignIn) {}
 }
 

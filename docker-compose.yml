@@ -9,6 +9,6 @@ auth:
     - "POSTGRES_USER=root"
     - "POSTGRES_PASSWORD=root"
     - "PGDATA=/var/lib/postgresql/data/pgdata"
-#    entrypoint:
-#     - "sh"
-#     - "/app/entry-point.sh"
+#  entrypoint:
+#    - "sh"
+#    - "/app/entry-point.sh"

@@ -21,7 +21,7 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
               .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/api/users/signup").anonymous()
-                .antMatchers("/").permitAll()
+                .antMatchers("/", "/dist/**").permitAll()
               .and()
                 .authorizeRequests()
                 .antMatchers("/api/**").hasAuthority("ROLE_ADMIN")

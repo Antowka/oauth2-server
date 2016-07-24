@@ -4,10 +4,8 @@ import {OAuthService} from '../../services/OAuthService';
 import {User} from "../../models/User";
 import {Router} from 'angular2/router';
 
-
 @Component({
     selector:'signup',
-    directives:[],
     templateUrl: 'dist/templates/sign-up.html'
 })
 export class SignUp{
@@ -21,7 +19,10 @@ export class SignUp{
 
         this.signUpForm = fb.group({
             "username": ["", Validators.required],
+            "firstName": ["", Validators.required],
+            "lastName": ["", Validators.required],
             "email": ["", Validators.required],
+            "birthday": ["", Validators.required],
             "password": ["", Validators.required],
             "confirmPassword": ["", Validators.required]
         });

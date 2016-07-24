@@ -10,18 +10,18 @@ gulp.task('browserify', () => {
         entries: 'source/Oauth2App.ts',
         debug: true
     })
-        .plugin(tsify, {
-            target: 'es5',
-            experimentalDecorators: true
-        })
-        .bundle()
-        .on('error', function(err){
-            gutil.log(gutil.colors.red.bold('[browserify error]'));
-            gutil.log(err.message);
-            this.emit('end');
-        })
-        .pipe(source('bundle.js'))
-        .pipe(gulp.dest('./dist'));
+    .plugin(tsify, {
+        target: 'es5',
+        experimentalDecorators: true
+    })
+    .bundle()
+    .on('error', function(err){
+        gutil.log(gutil.colors.red.bold('[browserify error]'));
+        gutil.log(err.message);
+        this.emit('end');
+    })
+    .pipe(source('bundle.js'))
+    .pipe(gulp.dest('./dist'));
 });
 
 gulp.task('less', () => {

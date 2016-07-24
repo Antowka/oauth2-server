@@ -30,6 +30,12 @@ public class User {
     @Length(min = 6, message = "The field must be at least 5 characters")
     private String email;
 
+    private String firstName;
+
+    private String lastName;
+
+    private Date birthday;
+
     private boolean enabled = true;
 
     @JsonIgnore
